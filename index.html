@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESCRIBA HUB - Editor de Conteúdo PDF</title>
+    
+    <!-- CSS Externo -->
+    <link rel="stylesheet" href="./style.css">
+
+    <!-- Bibliotecas Client-Side (PDF-LIB e PDF.js) -->
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+</head>
+<body class="dark-theme">
+
+    <div class="app-container">
+        <!-- CABEÇALHO -->
+        <header class="app-header">
+            <div class="header-top">
+                <h1>✏️ Editor de Conteúdo de PDF</h1>
+                <button id="theme-toggle" class="btn-theme" type="button">🌙 Escuro</button>
+            </div>
+            <p>Insira novos textos e apague palavras, frases ou figuras de forma local e segura</p>
+            <span class="badge-privacy">🔒 Processamento 100% Local</span>
+        </header>
+
+        <!-- CARREGAMENTO DE ARQUIVO -->
+        <div class="drop-zone" id="drop-zone">
+            <p>📂 <strong>Clique aqui</strong> ou arraste seu arquivo PDF para começar</p>
+            <input type="file" id="pdf-input" accept="application/pdf">
+        </div>
+
+        <!-- PAINEL PRINCIPAL DE EDIÇÃO -->
+        <div class="editor-layout" id="editor-layout" style="display: none;">
+            
+            <!-- BARRA DE FERRAMENTAS SIDERAR -->
+            <aside class="toolbar">
+                <div class="tool-section">
+                    <h3>🛠️ Módulos de Edição</h3>
+                    
+                    <!-- MODO SELEÇÃO -->
+                    <button class="tool-btn active" id="tool-select">
+                        <span>🔍</span> Navegar / Selecionar
+                    </button>
+
+                    <!-- MODO APAGAR / TARJA -->
+                    <button class="tool-btn" id="tool-erase">
+                        <span>🔲</span> Apagar / Ocultar Conteúdo
+                    </button>
+                    <div class="sub-options" id="erase-options">
+                        <label>Cor da Cobertura:</label>
+                        <select id="erase-color">
+                            <option value="white">Branco (Apagar limpo)</option>
+                            <option value="black">Preto (Tarja de segurança)</option>
+                        </select>
+                    </div>
+
+                    <!-- MODO INSERIR TEXTO -->
+                    <button class="tool-btn" id="tool-text">
+                        <span>✍️</span> Inserir Novo Texto
+                    </button>
+                    <div class="sub-options" id="text-options">
+                        <label>Texto a Inserir:</label>
+                        <input type="text" id="input-new-text" placeholder="Digite o texto aqui...">
+                        
+                        <label>Tamanho da Fonte:</label>
+                        <input type="number" id="input-font-size" value="14" min="8" max="72">
+
+                        <label>Cor do Texto:</label>
+                        <input type="color" id="input-text-color" value="#000000">
+                    </div>
+                </div>
+
+                <div class="tool-section actions-section">
+                    <button class="btn btn-secondary" id="btn-undo">↩️ Desfazer Última Ação</button>
+                    <button class="btn btn-secondary" id="btn-reset">🔄 Reiniciar</button>
+                    <button class="btn btn-success" id="btn-export">💾 Baixar PDF Editado</button>
+                </div>
+            </aside>
+
+            <!-- ÁREA DE VISUALIZAÇÃO E DESENHO DAS PÁGINAS -->
+            <main class="viewport">
+                <div class="page-navigator">
+                    <button class="nav-btn" id="btn-prev-page">◀️ Anterior</button>
+                    <span>Página <strong id="current-page-num">1</strong> de <strong id="total-pages-num">1</strong></span>
+                    <button class="nav-btn" id="btn-next-page">Próxima ▶️</button>
+                </div>
+
+                <div class="canvas-wrapper" id="canvas-wrapper">
+                    <!-- Canvas onde o PDF é renderizado -->
+                    <canvas id="pdf-render-canvas"></canvas>
+                    <!-- Overlay interativo onde as edições acontecem -->
+                    <div id="annotation-overlay" class="annotation-overlay"></div>
+                </div>
+            </main>
+        </div>
+
+        <div class="status-msg" id="status-text"></div>
+    </div>
+
+    <!-- JS Externo -->
+    <script src="./script.js"></script>
+</body>
+</html>
